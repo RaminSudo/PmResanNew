@@ -1,6 +1,6 @@
 <?php
 
-define('API_KEY','*Your TOKEN');
+define('API_KEY','**TOKEN**');
 
 function makereq($method,$datas=[]){
     $url = "https://api.telegram.org/bot".API_KEY."/".$method;
@@ -44,8 +44,9 @@ var_dump($update);
 //=========
 $chat_id = $update->message->chat->id;
 $boolean = file_get_contents('booleans.txt');
-  $booleans= explode("\n",$boolean);
-
+$booleans= explode("\n",$boolean);
+$done = file_get_contents('done.txt');
+$start = file_get_contents('start.txt');
 $message_id = $update->message->message_id;
 $from_id = $update->message->from->id;
 $name = $update->message->from->first_name;
@@ -60,7 +61,7 @@ $file = $update->message->document;
 $music = $update->message->audio;
 $voice = $update->message->voice;
 $forward = $update->message->forward_from;
-$admin = *ADMIN*;
+$admin = **ADMIN**;
 //-------
 function SendMessage($ChatId, $TextMsg)
 {
@@ -123,8 +124,7 @@ var_dump(makereq('sendMessage',[
  
 var_dump(makereq('sendMessage',[
         'chat_id'=>$update->message->chat->id,
-        'text'=>"Hi There, Welcome To My Bot😀👌
-Send Me Your Messages 🌹",
+        'text'=>" $start ",
         'parse_mode'=>'MarkDown',
         'resize_keyboard'=>true,
         'reply_markup'=>json_encode([
@@ -155,28 +155,36 @@ $pmembersid= explode("\n",$txxt);
 	SendMessage($chat_id,"با موفقیت تغییریافت");
 	}
 	}
-
 elseif($textmessage == 'پروفایل👤')
 	{
 	$profile = file_get_contents("profile.txt");
 	Sendmessage($chat_id," $profile ");
 	}
+         elseif(strpos($textmessage , '/setdone')!== false && $chat_id == $admin)
+	{
+		$javab = str_replace('/setdone',"",$textmessage);
+		if ($javab != "")
+	{
+	save("done.txt","$javab");
+	SendMessage($chat_id,"پیام پیشفرض ربات به
 
-  elseif(strpos($textmessage , '/userteam')!== false && $chat_id == $admin)
+$javab
+
+تغییر یافت ✅");
+	}
+        }
+  elseif(strpos($textmessage , '/setstart')!== false && $chat_id == $admin)
   {
-    $javab = str_replace('/userteam',"",$textmessage);
+    $javab = str_replace('/setstart',"",$textmessage);
     if ($javab != "")
   {
-  save("membertxt.txt","$javab");
-  SendMessage($chat_id,"با موفقیت تغییریافت");
-  }
-  }
+  save("start.txt","$javab");
+  SendMessage($chat_id,"پیام شروع (استارت) ربات به
 
-elseif($textmessage == '/creator')
-  {
-  	Sendmessage($chat_id,"
-Developer > @Me_DeViL
-");
+$javab
+
+تغییر یافت ✅");
+  }
   }
 
 elseif($textmessage == '⚓️ Help')
@@ -190,6 +198,14 @@ if($chat_id == $admin){
 
 🔸تنظیم متن دکمه پروفایل
 `/setprofile` (Text)
+
+🔸تنظیم متن پیشفرض (Done)
+`/setdone` (Text)
+
+🔸تنظیم متن شروع
+`/setstart` (Text)
+
+✍🏻 Source By #DeViL
 ");
 	}
 }
@@ -210,7 +226,7 @@ $membersid= explode("\n",$txt);
 $substr = substr($text, 0, 28);
 	if (!in_array($chat_id,$membersid)) {
 Forward($admin,$chat_id,$message_id);
-Sendmessage($chat_id,"🗣 Your Message Has Been Sent.");
+Sendmessage($chat_id," $done ");
 }else{
 
 Sendmessage($chat_id,"You Blocked !🚫");
