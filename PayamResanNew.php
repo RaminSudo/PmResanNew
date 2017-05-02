@@ -1,6 +1,6 @@
 <?php
 
-define('API_KEY','**TOKEN**');
+define('API_KEY','**300194647:AAGlOH2mEo0UQxUXKEL977NxWyj3PosH4fE**');
 
 function makereq($method,$datas=[]){
     $url = "https://api.telegram.org/bot".API_KEY."/".$method;
@@ -61,7 +61,7 @@ $file = $update->message->document;
 $music = $update->message->audio;
 $voice = $update->message->voice;
 $forward = $update->message->forward_from;
-$admin = **ADMIN**;
+$admin = **145064636**;
 //-------
 function SendMessage($ChatId, $TextMsg)
 {
